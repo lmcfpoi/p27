@@ -10,7 +10,7 @@ jobs:
       - checkout
       - add_ssh_keys:
            fingerprints:
-             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
+             - "1a:e6:21:f0:d2:dd:12:c3:a1:8d:46:eb:cc:fe:7b:12"
       - run:
           name: Create S3 Bucket
           command: |
@@ -26,7 +26,7 @@ jobs:
       - checkout
       - add_ssh_keys:
            fingerprints:
-             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
+             - "1a:e6:21:f0:d2:dd:12:c3:a1:8d:46:eb:cc:fe:7b:12"
       - persist_to_workspace:
           root: /tmp/workspace  # from variable working_directory
           paths:  # relative to root
@@ -45,7 +45,7 @@ jobs:
       - checkout
       - add_ssh_keys:
            fingerprints:
-             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
+             - "1a:e6:21:f0:d2:dd:12:c3:a1:8d:46:eb:cc:fe:7b:12"
       - run:
           name: Promote to production
           command: |
@@ -61,7 +61,7 @@ jobs:
       - checkout
       - add_ssh_keys:
            fingerprints:
-             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
+             - "1a:e6:21:f0:d2:dd:12:c3:a1:8d:46:eb:cc:fe:7b:12"
       - attach_workspace:
           at: /tmp/workspace
       - run:
