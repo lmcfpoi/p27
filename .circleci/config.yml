@@ -9,7 +9,7 @@ version: 2.1
 #             aws cloudformation delete-stack --stack-name prod-${CIRCLE_WORKFLOW_ID}
 
 jobs:
-  create_and_deploy_front_end:
+  create_and_deploy_front:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -75,7 +75,7 @@ jobs:
 workflows:
   myworkflow:
     jobs:
-      - create_and_deploy_front_end
+      - create_and_deploy_front
       - get_last_deployment_id
       - promote_to_production
       - clean_up_old_front_end
