@@ -12,7 +12,7 @@ jobs:
           name: Create S3 Bucket
           command: |
             aws --region us-west-1 cloudformation deploy \
-            --template-file ./bucket.yml \
+            --template-file .circleci/bucket.yml \
             --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -41,7 +41,7 @@ jobs:
           name: Promote to production
           command: |
             aws --region us-west-1 cloudformation deploy \
-            --template-file ./cloudfront.yml \
+            --template-file .circleci/cloudfront.yml \
             --stack-name production-distro \
             --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID}"
 
