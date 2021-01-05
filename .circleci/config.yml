@@ -1,78 +1,13 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
-# commands:
-#   destroy_environment:
-#     steps:
-#       - run:
-#           name: Destroy environment
-#           command: |
-#             aws cloudformation delete-stack --stack-name prod-${CIRCLE_WORKFLOW_ID}
-
-jobs:
-  create_and_deploy_front_end:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: Create S3 Bucket
-          command: |
-            aws cloudformation deploy \
-            --template-file bucket.yml \
-            --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \ # ${CIRCLE_WORKFLOW_ID:0:7} takes the first 7 chars of the variable CIRCLE_CI_WORKFLOW_ID
-            --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
-
-  get_last_deployment_id:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: /tmp/workspace  # from variable working_directory
-          paths:  # relative to root
-            - id/pipelineid.txt 
-      - run:
-          name: Get last deployment ID
-          command: |
-            aws cloudformation \
-            list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
-            --no-paginate --output text > id/pipelineid.txt
-
-  promote_to_production:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: Promote to production
-          command: |
-            aws cloudformation deploy \
-            --template-file cloudfront.yml \
-            --stack-name production-distro \
-            --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID}"
-
-   clean_up_old_front_end:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: Extract Pipeline ID
-          command:
-            OldPipelineID=`cat id/pipelineid.txt`
-
-      - run:
-          name: Delete old pipeline ID
-          command: |
-            aws s3 rm "s3://${OldPipelineID}" --recursive
-      - run:
-          name: Delete old stack
-          command: |
-            # aws cloudformation delete-stack --stack-name "${PreviousPipelineID}"
-
+# Use a package of configuration called an orb.
+orbs:
+  # Declare a dependency on the welcome-orb
+  welcome: circleci/welcome-orb@0.4.1
+# Orchestrate or schedule a set of jobs
 workflows:
-  myworkflow:
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
     jobs:
-      - create_and_deploy_front_end
+      - welcome/run
