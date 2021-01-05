@@ -1,6 +1,6 @@
 version: 2.1
 
-# commands:
+#   commands:
 #   destroy_environment:
 #     steps:
 #       - run:
