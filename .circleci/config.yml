@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Create S3 Bucket
           command: |
-            aws cloudformation deploy \
+            aws --region us-west-1 cloudformation deploy \
             --template-file bucket.yml \
             --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
