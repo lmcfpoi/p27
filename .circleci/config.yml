@@ -8,6 +8,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+       - add_ssh_keys:
+           fingerprints:
+             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
       - run:
           name: Create S3 Bucket
           command: |
@@ -21,6 +24,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - add_ssh_keys:
+           fingerprints:
+             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
       - persist_to_workspace:
           root: /tmp/workspace  # from variable working_directory
           paths:  # relative to root
@@ -37,6 +43,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - add_ssh_keys:
+           fingerprints:
+             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
       - run:
           name: Promote to production
           command: |
@@ -50,6 +59,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - add_ssh_keys:
+           fingerprints:
+             - "50:d2:e3:f8:e5:f0:61:76:71:64:c5:d3:eb:63:d8:42"
       - attach_workspace:
           at: /tmp/workspace
       - run:
