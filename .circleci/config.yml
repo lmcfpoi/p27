@@ -1,4 +1,7 @@
+#######
 version: 2.1
+########
+
 jobs:
   create_and_deploy_front_end:
     docker:
@@ -10,7 +13,7 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file bucket.yml \
-            --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \ # ${CIRCLE_WORKFLOW_ID:0:7} takes the first 7 chars of the variable CIRCLE_CI_WORKFLOW_ID
+            --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
 
   get_last_deployment_id:
@@ -21,7 +24,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp/workspace  # from variable working_directory
           paths:  # relative to root
-            - id/pipelineid.txt 
+            - id/pipelineid.txt
       - run:
           name: Get last deployment ID
           command: |
@@ -42,7 +45,7 @@ jobs:
             --stack-name production-distro \
             --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID}"
 
-   clean_up_old_front_end:
+  clean_up_old_front_end:
     docker:
       - image: amazon/aws-cli
     steps:
@@ -61,7 +64,7 @@ jobs:
       - run:
           name: Delete old stack
           command: |
-            # aws cloudformation delete-stack --stack-name "${PreviousPipelineID}"
+            aws cloudformation delete-stack --stack-name "${PreviousPipelineID}"
 
 workflows:
   myworkflow:
